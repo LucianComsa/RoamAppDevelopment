@@ -81,6 +81,7 @@ import static android.support.v4.view.ViewPager.LayoutParams.*;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 //PULA MEA CANTERESTE 1kg
+    //update
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public static ViewPager mViewPager;
     EditText mySearchField;
