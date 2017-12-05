@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "952547967098-8d5eq8q0fpruogtimdk8t0ftkb07jlg2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.luci.roamappdevelopment",
-            "certificate_hash": "c1be8ca55e6003ab9d115aaf547ffa5cf64e7189"
-          }
-        },
-        {
           "client_id": "952547967098-dbe6kna2gngemhprajjnjtpp1h6q12i8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
