@@ -80,7 +80,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 import static android.support.v4.view.ViewPager.LayoutParams.*;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
-//pula mea e mare da da
+//PENISUL MEU ARE 500 grame!!!!
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public static ViewPager mViewPager;
     EditText mySearchField;
