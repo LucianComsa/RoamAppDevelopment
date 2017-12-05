@@ -80,7 +80,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 import static android.support.v4.view.ViewPager.LayoutParams.*;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
-//LUCI UPDATE
+
+    private ArrayList<String> tester;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public static ViewPager mViewPager;
     EditText mySearchField;
