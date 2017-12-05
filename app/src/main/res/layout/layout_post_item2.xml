@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+        <android.support.v7.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardViewPhotoUser"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:cardCornerRadius="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:id="@+id/user_photo_post"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user_name_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
+                android:text="USERNAME HERE" />
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal">
+             <ImageView
+                 android:id="@+id/post_location_icon"
+                 android:layout_width="32dp"
+                 android:layout_height="32dp"
+                 android:layout_marginLeft="8dp"
+                 android:src="@mipmap/ic_location"
+                 android:layout_marginTop="8dp" />
+             <TextView
+                 android:id="@+id/post_location"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="PostLocation"
+                 android:layout_marginTop="16dp"
+                 android:layout_marginLeft="2dp"/>
+         </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <uk.co.senab.photoview.PhotoView
+        android:id="@+id/post_photo"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+
+        android:adjustViewBounds="true"
+
+        android:layout_marginTop="8dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/post_description_icon"
+            android:layout_width="31dp"
+            android:layout_height="32dp"
+            android:src="@mipmap/ic_description"
+            android:layout_marginTop="9dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
+        <TextView
+            android:id="@+id/post_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Post description"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="10dp" />
+    </LinearLayout>
+</LinearLayout>

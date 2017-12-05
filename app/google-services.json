@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "952547967098",
+    "firebase_url": "https://roamdevelopment-187604.firebaseio.com",
+    "project_id": "roamdevelopment-187604",
+    "storage_bucket": "roamdevelopment-187604.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952547967098:android:ccba8bd064e3f4ee",
+        "android_client_info": {
+          "package_name": "com.example.luci.roamappdevelopment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952547967098-dbe6kna2gngemhprajjnjtpp1h6q12i8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.luci.roamappdevelopment",
+            "certificate_hash": "0437665cdaf45f1f393e6c9ac465173e0f5623e1"
+          }
+        },
+        {
+          "client_id": "952547967098-2uc2r8hc331nti8poaqai96gkc8jd904.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5B8sDGrB_njxRFv9LbJHK2nJsNPlh0gU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952547967098-2uc2r8hc331nti8poaqai96gkc8jd904.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

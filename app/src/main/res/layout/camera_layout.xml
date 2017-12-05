@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.luci.roamappdevelopment.CameraActivity">
+
+    <FrameLayout
+        android:id="@+id/camera_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="1dp"></FrameLayout>
+
+    <Button
+        android:layout_width="62dp"
+        android:layout_height="61dp"
+        android:id="@+id/takepicbtn"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center|bottom"
+        android:background="@mipmap/ic_camera_take_pic"
+        android:onClick="takePicture"
+        android:layout_marginBottom="10dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:id="@+id/imagepreview"
+        android:background="@android:color/transparent"
+        android:elevation="2dp"
+        />
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:id="@+id/previewImage"
+        android:background="@android:color/transparent"
+        android:elevation="2dp"
+        />
+
+
+
+    <Button
+        android:layout_width="46dp"
+        android:layout_height="36dp"
+        android:text=""
+        android:onClick="buttonSwitchCamera"
+        android:layout_gravity="right|top"
+        android:background="@mipmap/ic_camera_switch"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:visibility="invisible"
+        />
+
+    <ImageButton
+        android:id="@+id/buttonCancelPhoto"
+        android:layout_width="65dp"
+        android:layout_height="61dp"
+        android:background="@mipmap/ic_x_button"
+        android:layout_gravity="left|bottom"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="60dp"
+        android:elevation="1dp"
+        android:onClick="deletePicture"/>
+    <ImageButton
+        android:id="@+id/buttonSavePhoto"
+        android:layout_width="94dp"
+        android:layout_height="90dp"
+        android:background="@mipmap/ic_green_tick"
+        android:layout_gravity="right|bottom"
+        android:layout_marginRight="40dp"
+        android:elevation="1dp"
+        android:onClick="savePicture"
+        />
+
+
+</FrameLayout>
