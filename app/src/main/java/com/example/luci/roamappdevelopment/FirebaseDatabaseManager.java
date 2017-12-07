@@ -1,6 +1,7 @@
 package com.example.luci.roamappdevelopment;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -46,7 +47,7 @@ public class FirebaseDatabaseManager {
                 String key = dataSnapshot.getKey();
                 if(!locations.contains(key))
                 {
-                    locations.add(key.toLowerCase());
+                    locations.add(key);
                 }
             }
 
@@ -212,9 +213,32 @@ public class FirebaseDatabaseManager {
             }
         });
     }
+    private boolean hasLocation(String location)
+    {
+        location = location.toLowerCase();
+        for(int i = 0; i < locations.size(); i++)
+        {
+            if(locations.get(i).toLowerCase().equals(location))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    private String getLocationFromList(String location)
+    {
+        for(int i = 0; i < locations.size(); i++)
+        {
+            if(locations.get(i).toLowerCase().equals(location))
+            {
+                return locations.get(i);
+            }
+        }
+        return "";
+    }
     public void searchForResults(final String location)
     {
-        if(!locations.contains(location.toLowerCase()))
+        if(!hasLocation(location))
         {
             SearchActivity.setResultVisibility(false);
         }
@@ -225,7 +249,7 @@ public class FirebaseDatabaseManager {
             refForPosts.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    DataSnapshot rightSnap = dataSnapshot.child(location);
+                    DataSnapshot rightSnap = dataSnapshot.child(getLocationFromList(location));
                     if(rightSnap != null)
                     {
                         Iterator<DataSnapshot> snapsForPosts = rightSnap.getChildren().iterator();

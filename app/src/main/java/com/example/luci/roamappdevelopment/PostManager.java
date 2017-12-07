@@ -48,7 +48,7 @@ public class PostManager {
        {
             try
             {
-                manager.retrievePhotoFromCloud(posts.get(i), MainActivity.newsfeed_adapter);
+                manager.retrievePhotoFromCloud(posts.get(i), MainActivity.newsfeed_adapter, "posts");
             }catch(Exception e){
             }
        }
@@ -56,11 +56,13 @@ public class PostManager {
     }
     public static void loadResults(ArrayList<Post> posts)
     {
+        SearchActivity.postsForResult.clear();
+        SearchActivity.resultsAdapter.clear();
         FirebaseStorageManager manager = FirebaseStorageManager.getInstance();
         for(int i = 0; i < posts.size(); i++)
         {
             try {
-                manager.retrievePhotoFromCloud(posts.get(i), SearchActivity.resultsAdapter);
+                manager.retrievePhotoFromCloud(posts.get(i), SearchActivity.resultsAdapter, "search");
             } catch (IOException e) {
                 e.printStackTrace();
             }
