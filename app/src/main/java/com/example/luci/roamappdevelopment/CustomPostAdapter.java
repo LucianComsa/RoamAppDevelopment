@@ -1,6 +1,8 @@
 package com.example.luci.roamappdevelopment;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
@@ -36,7 +40,7 @@ public class CustomPostAdapter extends ArrayAdapter<Post>
     }
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(final int position, View convertView, ViewGroup parent)
     {
         ViewHolder holder;
         if(convertView == null)
@@ -47,7 +51,7 @@ public class CustomPostAdapter extends ArrayAdapter<Post>
             holder.userName = (TextView) convertView.findViewById(R.id.user_name_post);
             holder.photoDescription =  (TextView) convertView.findViewById(R.id.post_description);
             holder.photoLocation =  (TextView) convertView.findViewById(R.id.post_location);
-            holder.postPhoto = (PhotoView) convertView.findViewById(R.id.post_photo);
+            holder.postPhoto = (ImageView) convertView.findViewById(R.id.post_photo);
             convertView.setTag(holder);
         }
         else
@@ -78,6 +82,15 @@ public class CustomPostAdapter extends ArrayAdapter<Post>
         Glide.with(getContext()).load(currentPost.getPostPhotoFile()).centerCrop().crossFade().into(holder.postPhoto);
       //  holder.postPhoto.bringToFront();
         attacher = new PhotoViewAttacher(holder.postPhoto);
+        attacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+            @Override
+            public void onPhotoTap(View view, float x, float y) {
+                File f = getItem(position).getPostPhotoFile();
+                Intent i = new Intent(getContext(), PhotoShowActivity.class);
+                i.putExtra("image", f);
+                getContext().startActivity(i);
+            }
+        });
         return convertView;
     }
 }

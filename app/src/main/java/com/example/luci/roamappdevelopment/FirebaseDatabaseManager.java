@@ -128,9 +128,7 @@ public class FirebaseDatabaseManager {
         UserProfile profile = UserProfile.getInstance();
         post.setUseImagePath(profile.imagePath.toString());
        DatabaseReference ref = database.getReference("publicContent").child("posts").child(encodeEmail());
-      //  Toast.makeText(a, "ENCODED" + n, Toast.LENGTH_SHORT).show();
         String n = ref.push().getKey();
-        //.makeText(a, n, Toast.LENGTH_SHORT).show();
         post.setUserName(UserProfile.displayName);
         ref.child(n).setValue(post);
         ref = database.getReference("publicContent").child("postHistory").child(n);

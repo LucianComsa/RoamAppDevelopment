@@ -57,14 +57,12 @@
          </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-    <uk.co.senab.photoview.PhotoView
-        android:id="@+id/post_photo"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-
-        android:adjustViewBounds="true"
-
-        android:layout_marginTop="8dp" />
+       <ImageView
+           android:id="@+id/post_photo"
+           android:layout_width="match_parent"
+           android:layout_height="400dp"
+           android:adjustViewBounds="true"
+           android:layout_marginTop="8dp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

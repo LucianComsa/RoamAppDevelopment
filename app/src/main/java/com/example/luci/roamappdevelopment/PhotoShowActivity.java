@@ -8,6 +8,8 @@ import android.support.constraint.ConstraintLayout;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -19,6 +21,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class PhotoShowActivity extends Activity{
   //  Toolbar bar;
     PhotoView photoToShow;
+    PhotoViewAttacher attacher = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +42,14 @@ public class PhotoShowActivity extends Activity{
 
 
         }catch(Exception e){finish();}
-        ConstraintLayout root = (ConstraintLayout) findViewById(R.id.layout_photo_show);
-        root.setOnTouchListener(new OnSwipeTouchListener(PhotoShowActivity.this)
+        attacher = new PhotoViewAttacher(photoToShow);
+        photoToShow.setOnTouchListener(new OnSwipeTouchListener(PhotoShowActivity.this)
         {
             public void onSwipeRight() {
                 PhotoShowActivity.this.finish();
             }
             public void onSwipeLeft() {
-                //        PhotoShowActivity.this.finish();
+                        PhotoShowActivity.this.finish();
             }
             public void onSwipeTop() {
                 //       PhotoShowActivity.this.finish();
@@ -55,23 +58,9 @@ public class PhotoShowActivity extends Activity{
                 //      PhotoShowActivity.this.finish();
             }
         });
-//        photoToShow.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                PhotoViewAttacher zoomer = new PhotoViewAttacher((ImageView)v);
-//                zoomer.update();
-//                return false;
-//            }
-//        });
-        PhotoViewAttacher zoomer = new PhotoViewAttacher(photoToShow);
-        zoomer.update();
+
     }
-//    @Override
-//    public boolean onSupportNavigateUp() {
-//        finish();
-//        onBackPressed();
-//        return true;
-//    }
+
     public class OnSwipeTouchListener implements View.OnTouchListener {
 
         private final GestureDetector gestureDetector;
@@ -82,7 +71,11 @@ public class PhotoShowActivity extends Activity{
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            return gestureDetector.onTouchEvent(event);
+
+            if (attacher.getScale() == 1.0) {
+                gestureDetector.onTouchEvent(event);
+            }
+            return true;
         }
 
         private final class GestureListener extends GestureDetector.SimpleOnGestureListener {

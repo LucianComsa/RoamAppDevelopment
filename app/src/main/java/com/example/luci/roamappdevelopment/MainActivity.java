@@ -44,6 +44,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -56,6 +57,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -69,8 +71,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.zip.Inflater;
 
@@ -80,8 +84,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 import static android.support.v4.view.ViewPager.LayoutParams.*;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
-//plm coaie
-    //plm 2
+    static boolean forBottom = true;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public static ViewPager mViewPager;
     EditText mySearchField;
@@ -156,7 +159,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         navManager.setFromBottom(0, item);
                         break;
                     case R.id.menu_newsfeed:
-                        navManager.setFromBottom(1, item);
+                       if(mViewPager.getCurrentItem() == 1)
+                       {
+                        //newsfeed.setSelectionAfterHeaderView();
+                          newsfeed.smoothScrollToPosition(0);
+                       }else
+                       {
+                           navManager.setFromBottom(1, item);
+                       }
                         break;
                     case R.id.menu_new:
                         navManager.setFromBottom(2, item);
@@ -227,8 +237,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         //uploadPost();
         setInitialPosts();
         askForPermissions();
-        setInitialPersonalPosts();
-
     }
     @Override
     protected void onDestroy()
@@ -439,6 +447,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         newpost.setLocation(locationText.getText().toString());
         newpost.setUserEmail(profile.email);
         PostManager.UploadPost(newpost,photoPath);
+
     }
     private static void refreshFeed()
     {
@@ -494,11 +503,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         textPostsCount = (TextView) rootView.findViewById(R.id.text_posts_count);
         initialScrollViewHeight = profileScrollView.getHeight();
         setUpProfileGridView();
-        //setInitialPersonalPosts();
+        setInitialPersonalPosts();
         name.setText(profile.displayName);
         email.setText(profile.email);
         Glide.with(MainActivity.main).load(profile.imagePath).into(userProfilePic);
         FirebaseDatabaseManager.getInstance().getProfileBio();
+        gridViewProfile.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                
+            }
+
+            @Override
+            public void onScroll(  AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    if(firstVisibleItem + visibleItemCount >= totalItemCount && UserProfile.postCount > gridViewProfile.getAdapter().getCount() && forBottom == true)
+                    {
+                        Toast.makeText(main, "has to update", Toast.LENGTH_SHORT).show();
+                        FirebaseDatabaseManager.getInstance().getUserPosts(6);
+                        forBottom = false;
+                    }
+                    else if(firstVisibleItem + visibleItemCount < totalItemCount)
+                    {
+                        forBottom = true;
+                    }
+            }
+        });
 
     }
     private static void setUpProfileGridView()
@@ -512,9 +541,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         gridViewProfile.setExpanded(true);
         gridViewProfile.setSmoothScrollbarEnabled(true);
     }
+    public static void getUserPersonalPosts(int n)
+    {
+        FirebaseDatabaseManager.getInstance().getUserPosts(n);
+    }
     public static void setInitialPersonalPosts()
     {
-        FirebaseDatabaseManager.getInstance().getUserPosts(3);
+        FirebaseDatabaseManager.getInstance().getUserPosts(12);
     }
     public void setProfileBio(View v)
     {
@@ -551,6 +584,34 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 }
             }
         });
+    }
+    public void onClickPostPhoto(View v)
+    {
+        ImageView image = (ImageView) v;
+        LinearLayout l = (LinearLayout) image.getParent();
+        TextView description = l.findViewById(R.id.post_description);
+        TextView location = l.findViewById(R.id.post_location);
+        String d = description.getText().toString();
+        String loc = location.getText().toString();
+        File f = null;
+        boolean has = false;
+        for(int i = 0; i < newsfeed_adapter.getCount(); i++)
+        {
+            Post p = newsfeed_adapter.getItem(i);
+            if(p.getDescription() == d && p.getLocation() == loc)
+            {
+                f = p.getPostPhotoFile();
+                has = true;
+
+            }
+        }
+        if(has)
+        {
+            Intent in = new Intent(MainActivity.this, PhotoShowActivity.class);
+            in.putExtra("image", f);
+            startActivity(in);
+        }
+
     }
     private static void createNewPostScreen(View rootView)
     {

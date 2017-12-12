@@ -67,7 +67,7 @@ public class FirebaseStorageManager
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         @SuppressWarnings("VisibleForTests")  int n = (int)taskSnapshot.getTotalByteCount();
-                        @SuppressWarnings("VisibleForTests")    int actual = (int) taskSnapshot.getBytesTransferred();
+                        @SuppressWarnings("VisibleForTests")  int actual = (int) taskSnapshot.getBytesTransferred();
                         MainActivity.builder.setProgress(n,actual,false);
                         MainActivity.notificationManager.notify(1, MainActivity.builder.build());
                     }

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.luci.roamappdevelopment.MainActivity">
 
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -182,8 +181,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintHorizontal_bias="0.0" />
-
-
                 <com.example.luci.roamappdevelopment.ExpandableGridView
                     android:id="@+id/images_grid_view"
                     android:layout_width="0dp"
@@ -193,15 +190,11 @@
                     android:numColumns="3"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="2dp"
-                    android:layout_marginLeft="8dp"
                     app:layout_constraintTop_toTopOf="@+id/splitter2"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginStart="8dp" />
-
-
-
+                    app:layout_constraintLeft_toLeftOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
     </ScrollView>
+
 
 </android.support.constraint.ConstraintLayout>
