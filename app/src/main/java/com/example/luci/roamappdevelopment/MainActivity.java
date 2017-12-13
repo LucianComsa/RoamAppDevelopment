@@ -84,7 +84,6 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 import static android.support.v4.view.ViewPager.LayoutParams.*;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
-    static boolean forBottom = true;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public static ViewPager mViewPager;
     EditText mySearchField;
@@ -499,33 +498,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         userProfilePic = (ImageView) rootView.findViewById(R.id.imageViewProfile);
         profileBio = (TextView) rootView.findViewById(R.id.userprofiledescription);
         gridViewProfile = (ExpandableGridView) rootView.findViewById(R.id.images_grid_view);
-        profileScrollView = (ScrollView) rootView.findViewById(R.id.parentScrollView);
+        //profileScrollView = (ScrollView) rootView.findViewById(R.id.parentScrollView);
         textPostsCount = (TextView) rootView.findViewById(R.id.text_posts_count);
-        initialScrollViewHeight = profileScrollView.getHeight();
+       // initialScrollViewHeight = profileScrollView.getHeight();
         setUpProfileGridView();
         setInitialPersonalPosts();
         name.setText(profile.displayName);
         email.setText(profile.email);
         Glide.with(MainActivity.main).load(profile.imagePath).into(userProfilePic);
         FirebaseDatabaseManager.getInstance().getProfileBio();
-        gridViewProfile.setOnScrollListener(new AbsListView.OnScrollListener() {
+        InteractiveScrollView scrollView = (InteractiveScrollView) rootView.findViewById(R.id.parentScrollView);
+        scrollView.setOnBottomReachedListener(new InteractiveScrollView.OnBottomReachedListener() {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                
-            }
-
-            @Override
-            public void onScroll(  AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                    if(firstVisibleItem + visibleItemCount >= totalItemCount && UserProfile.postCount > gridViewProfile.getAdapter().getCount() && forBottom == true)
-                    {
-                        Toast.makeText(main, "has to update", Toast.LENGTH_SHORT).show();
-                        FirebaseDatabaseManager.getInstance().getUserPosts(6);
-                        forBottom = false;
-                    }
-                    else if(firstVisibleItem + visibleItemCount < totalItemCount)
-                    {
-                        forBottom = true;
-                    }
+            public void onBottomReached() {
+                    FirebaseDatabaseManager.getInstance().getUserPosts(6);
             }
         });
 
@@ -547,7 +533,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
     public static void setInitialPersonalPosts()
     {
-        FirebaseDatabaseManager.getInstance().getUserPosts(12);
+        FirebaseDatabaseManager.getInstance().getUserPosts(6);
     }
     public void setProfileBio(View v)
     {

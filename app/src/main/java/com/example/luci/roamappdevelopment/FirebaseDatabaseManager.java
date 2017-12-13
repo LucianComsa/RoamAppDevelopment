@@ -1,5 +1,6 @@
 package com.example.luci.roamappdevelopment;
 
+import android.*;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by LUCI on 11/2/2017.
@@ -165,51 +167,68 @@ public class FirebaseDatabaseManager {
     }
     public void getUserPosts(final int number)
     {
-        final String n = encodeEmail();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("publicContent").child("posts");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                DataSnapshot snp = dataSnapshot.child(n);
-                try
-                {
-                    UserProfile.postCount = (int)snp.getChildrenCount();
-                    MainActivity.textPostsCount.setText(UserProfile.postCount +"");
-                }catch(Exception e){}
-                if(snp.getChildrenCount() < (personalPostsCounter+number))
-                {
-                    if(personalPostsCounter == 0)
-                    {
-                        Iterator<DataSnapshot> snaps = snp.getChildren().iterator();
-                        ArrayList<Post> posts = new ArrayList<Post>();
-                        while(snaps.hasNext())
-                        {
-                            Post p = snaps.next().getValue(Post.class);
-                            posts.add(p);
-                        }
-                        PostManager.getInstance().loadPersonalPosts(posts);
-                        personalPostsCounter += number;
-                    }
-                }
-                else
-                {
-                    Iterator<DataSnapshot> snaps = snp.getChildren().iterator();
-                    ArrayList<Post> posts = new ArrayList<Post>();
-                    for(int i = 0; i < number; i++)
-                    {
-                        Post p = snaps.next().getValue(Post.class);
-                        posts.add(p);
-                    }
-                    PostManager.getInstance().loadPersonalPosts(posts);
-                    personalPostsCounter += number;
-                }
-            }
+               final String n = encodeEmail();
+               DatabaseReference reference = FirebaseDatabase.getInstance().getReference("publicContent").child("posts");
+               reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(DataSnapshot dataSnapshot) {
+                       DataSnapshot snp = dataSnapshot.child(n);
+                       try
+                       {
+                           UserProfile.postCount = (int)snp.getChildrenCount();
+                           MainActivity.textPostsCount.setText(UserProfile.postCount +"");
+                       }catch(Exception e){}
+                       if(personalPostsCounter > 0)
+                       {
+                           Iterator<DataSnapshot> snaps = snp.getChildren().iterator();
+                           for(int i = 0; i < personalPostsCounter; i++)
+                           {
+                               try
+                               {
+                                   snaps.next();
+                               }catch(Exception e){break;}
+                           }
+                           ArrayList<Post> posts = new ArrayList<Post>();
+                           for(int i = 0; i < number; i++)
+                           {
+                               try
+                               {
+                                   Post p = snaps.next().getValue(Post.class);
+                                   posts.add(p);
+                               }catch(Exception e){break;}
+                           }
+                           if(posts.size() > 0)
+                           {
+                               PostManager.getInstance().loadPersonalPosts(posts);
+                               personalPostsCounter += number;
+                           }
+                       }
+                       else
+                       {
+                           Iterator<DataSnapshot> snaps = snp.getChildren().iterator();
+                           ArrayList<Post> posts = new ArrayList<Post>();
+                           for(int i = 0; i < number; i++)
+                           {
+                               try
+                               {
+                                   Post p = snaps.next().getValue(Post.class);
+                                   posts.add(p);
+                               }catch(Exception e) {break;}
+                               // Log.d("POST PERSONAL",p.getDescription());
+                           }
+                           if(posts.size() > 0)
+                           {
+                               PostManager.getInstance().loadPersonalPosts(posts);
+                               personalPostsCounter += number;
+                           }
+                       }
+                   }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                   @Override
+                   public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                   }
+               });
     }
     private boolean hasLocation(String location)
     {

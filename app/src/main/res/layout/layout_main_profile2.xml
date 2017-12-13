@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.luci.roamappdevelopment.MainActivity">
 
-    <ScrollView
+    <com.example.luci.roamappdevelopment.InteractiveScrollView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/parentScrollView"
@@ -112,7 +112,7 @@
                 android:id="@+id/text_posts_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="500"
+                android:text="0"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginLeft="8dp"
@@ -194,7 +194,7 @@
                     app:layout_constraintLeft_toLeftOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
-    </ScrollView>
+    </com.example.luci.roamappdevelopment.InteractiveScrollView>
 
 
 </android.support.constraint.ConstraintLayout>
