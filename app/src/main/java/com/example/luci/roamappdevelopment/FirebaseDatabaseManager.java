@@ -29,7 +29,7 @@ public class FirebaseDatabaseManager {
     private int number_of_retrieves = 0;
     private ArrayList<String> postRetrivalHistory;
     private ArrayList<String> locations;
-    private int personalPostsCounter;
+    static int personalPostsCounter;
 
     private FirebaseDatabaseManager()
     {
@@ -73,6 +73,7 @@ public class FirebaseDatabaseManager {
 
             }
         });
+        //TODO Implement listener for adding new personal post
 
 
     }

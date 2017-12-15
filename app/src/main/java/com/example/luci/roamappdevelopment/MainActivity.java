@@ -27,6 +27,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentContainer;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager.LayoutParams;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -54,10 +55,12 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -117,6 +120,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private static ImageView pictureView;
     static String photoPath="";
     //Fields for profile
+    static BottomNavigationView viewSelector;
+    static ListView personalPostListView;
+    static CustomPostAdapter adapterForProfileList;
     static ScrollView profileScrollView;
     static GridImageAdapter gridAdapter;
     static ArrayList<Post> postsForPersonalProfile;
@@ -234,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         mViewPager.setCurrentItem(1);
         //       setLogoListener();
         //uploadPost();
-        setInitialPosts();
+     //   setInitialPosts();
         askForPermissions();
     }
     @Override
@@ -507,14 +513,65 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         email.setText(profile.email);
         Glide.with(MainActivity.main).load(profile.imagePath).into(userProfilePic);
         FirebaseDatabaseManager.getInstance().getProfileBio();
-        InteractiveScrollView scrollView = (InteractiveScrollView) rootView.findViewById(R.id.parentScrollView);
+        final InteractiveScrollView scrollView = (InteractiveScrollView) rootView.findViewById(R.id.parentScrollView);
         scrollView.setOnBottomReachedListener(new InteractiveScrollView.OnBottomReachedListener() {
             @Override
             public void onBottomReached() {
                     FirebaseDatabaseManager.getInstance().getUserPosts(6);
             }
         });
+        viewSelector = (BottomNavigationView) rootView.findViewById(R.id.personal_post_view_selector);
+        adapterForProfileList = new CustomPostAdapter(MainActivity.main, postsForPersonalProfile);
+        personalPostListView = (ListView) rootView.findViewById(R.id.listViewForProfile);
+        personalPostListView.setAdapter(adapterForProfileList);
+        personalPostListView.setVisibility(View.GONE);
+        personalPostListView.setNestedScrollingEnabled(false);
+        personalPostListView.setSmoothScrollbarEnabled(true);
+        personalPostListView.setOnTouchListener(new View.OnTouchListener() {
+            // Setting on Touch Listener for handling the touch inside ScrollView
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Disallow the touch request for parent scroll on touch of child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+        final ProfilePostViewSwitcher switcher = new ProfilePostViewSwitcher(personalPostListView, gridViewProfile);
+        viewSelector.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.profile_grid_view_item:
+                        switcher.setGridView();
+                        break;
+                    case R.id.profile_list_view_item:
+                        switcher.setListView();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
 
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
     private static void setUpProfileGridView()
     {
