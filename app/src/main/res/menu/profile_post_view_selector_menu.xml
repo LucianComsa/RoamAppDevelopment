@@ -6,13 +6,13 @@
         android:title=""
         app:showAsAction="always"
         android:checked="true"
-        android:icon="@drawable/grid_icon"
+        android:icon="@mipmap/grid_icon"
         />
     <item
         android:id="@+id/profile_list_view_item"
         android:title=""
         app:showAsAction="always"
         android:checked="true"
-        android:icon="@drawable/list_icon"
+        android:icon="@mipmap/list_icon"
         />
 </menu>

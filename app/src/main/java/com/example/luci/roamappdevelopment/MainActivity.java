@@ -514,12 +514,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Glide.with(MainActivity.main).load(profile.imagePath).into(userProfilePic);
         FirebaseDatabaseManager.getInstance().getProfileBio();
         final InteractiveScrollView scrollView = (InteractiveScrollView) rootView.findViewById(R.id.parentScrollView);
-        scrollView.setOnBottomReachedListener(new InteractiveScrollView.OnBottomReachedListener() {
-            @Override
-            public void onBottomReached() {
-                    FirebaseDatabaseManager.getInstance().getUserPosts(6);
-            }
-        });
         viewSelector = (BottomNavigationView) rootView.findViewById(R.id.personal_post_view_selector);
         adapterForProfileList = new CustomPostAdapter(MainActivity.main, postsForPersonalProfile);
         personalPostListView = (ListView) rootView.findViewById(R.id.listViewForProfile);
@@ -536,6 +530,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 return false;
             }
         });
+        LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.linear);
+        final CustomListManagerProfilePosts listofPosts = new CustomListManagerProfilePosts(layout);
+        layout.setVisibility(View.GONE);
+        scrollView.setOnBottomReachedListener(new InteractiveScrollView.OnBottomReachedListener() {
+            @Override
+            public void onBottomReached() {
+                FirebaseDatabaseManager.getInstance().getUserPosts(6);
+                listofPosts.setPosts(postsForPersonalProfile);
+            }
+        });
         final ProfilePostViewSwitcher switcher = new ProfilePostViewSwitcher(personalPostListView, gridViewProfile);
         viewSelector.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -543,35 +547,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 switch (item.getItemId())
                 {
                     case R.id.profile_grid_view_item:
-                        switcher.setGridView();
+                       // switcher.setGridView();
+                        gridViewProfile.setVisibility(View.VISIBLE);
+                        listofPosts.setGone();
                         break;
                     case R.id.profile_list_view_item:
-                        switcher.setListView();
+                      //  switcher.setListView();
+                        gridViewProfile.setVisibility(View.GONE);
+                        listofPosts.setVisible();
+                        listofPosts.setPosts(postsForPersonalProfile);
                         break;
                 }
                 return true;
             }
         });
-    }
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null)
-            return;
-
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            view = listAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LayoutParams.WRAP_CONTENT));
-
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
-        }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
     }
     private static void setUpProfileGridView()
     {
