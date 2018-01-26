@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.view.ViewPager;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -42,22 +44,31 @@ public class PhotoShowActivity extends Activity{
 
 
         }catch(Exception e){finish();}
-        attacher = new PhotoViewAttacher(photoToShow);
-        photoToShow.setOnTouchListener(new OnSwipeTouchListener(PhotoShowActivity.this)
-        {
-            public void onSwipeRight() {
+        ConstraintLayout v = (ConstraintLayout) photoToShow.getParent();
+        v.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
                 PhotoShowActivity.this.finish();
-            }
-            public void onSwipeLeft() {
-                        PhotoShowActivity.this.finish();
-            }
-            public void onSwipeTop() {
-                //       PhotoShowActivity.this.finish();
-            }
-            public void onSwipeBottom() {
-                //      PhotoShowActivity.this.finish();
+                return false;
             }
         });
+//        photoToShow.setOnTouchListener(new OnSwipeTouchListener(PhotoShowActivity.this)
+//        {
+//            public void onSwipeRight() {
+//                PhotoShowActivity.this.finish();
+//            }
+//            public void onSwipeLeft() {
+//                        PhotoShowActivity.this.finish();
+//            }
+//            public void onSwipeTop() {
+//                //       PhotoShowActivity.this.finish();
+//            }
+//            public void onSwipeBottom() {
+//                //      PhotoShowActivity.this.finish();
+//            }
+//        });
+//        attacher = new PhotoViewAttacher(photoToShow);
+
 
     }
 
@@ -72,9 +83,9 @@ public class PhotoShowActivity extends Activity{
         @Override
         public boolean onTouch(View v, MotionEvent event) {
 
-            if (attacher.getScale() == 1.0) {
+         //   if (attacher.getScale() == 1.0) {
                 gestureDetector.onTouchEvent(event);
-            }
+        //    }
             return true;
         }
 
